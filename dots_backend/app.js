@@ -71,7 +71,7 @@ app.get("/api/player/:player_id", (req, res) => {
 //PUT Method for Update a Player's Stats
 app.put("/api/player/:player_id",(req, res) => {
     User.find({user_name : req.body.username}, (err, docs) => {
-        if(docs.length == 1){
+        if(docs.length == 1 && req.params.player_id == docs[0].player_id){
             User.findOneAndUpdate({user_name : req.body.username}, {XP:req.body.xp, Gold:req.body.Gold}, function (err, docs){
                 if (err){
                     console.log(err)
@@ -89,7 +89,7 @@ app.put("/api/player/:player_id",(req, res) => {
             })
         }
         else{//If the username does not exists, it will return HTTP code 400, which means Bad Request
-            res.send("Username does NOT exists!");
+            res.send("Incorrect Credentials!");
             res.status(400);
         }
     })
